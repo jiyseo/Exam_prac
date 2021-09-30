@@ -1,11 +1,11 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-int	is_space(char str)
+int	is_space(char ch)
 {
-	if (str == ' ' || (str >= 9 && str <= 13))
-		return (0);
-	return (1);
+	if (ch == ' ' || (ch >= 9 && ch <= 13))
+		return (1);
+	return (0);
 }
 
 int	ft_word_cnt(char *str)
@@ -15,18 +15,34 @@ int	ft_word_cnt(char *str)
 	cnt = 1;
 	while (*str)
 	{
-		if (is_space(*str) == 0)
+		if (is_space(*str) == 1)
+		{
+			while (*str && is_space(*str) == 1)
+				str++;
 			cnt++;
+		}
 		str++;
 	}
 	return (cnt);
 }
 
-void	ft_strcat(char *dst, char *start, char *str)
+void	ft_strcpy(char *dst, char *start, char *str)
 {
 	while (start < str)
 		*dst++ = *start++;
-	*dst = 0;
+	*dst = '\0';
+}
+
+void	ft_strprt(char *str)
+{
+	int	i;
+
+	i = 0;
+	while(str[i] == '\0')
+	{
+		write(1, &str[i], 1);
+		i++;
+	}
 }
 
 void	ft_split(char *str)
@@ -39,37 +55,26 @@ void	ft_split(char *str)
 	start = str;
 	n = ft_word_cnt(start);
 	arr = malloc(sizeof (char*) * n);
-	if (!arr)
-		return (NULL);
 	i = 0;
 	while (*str)
 	{
-		if (*str && is_space(*str) == 1)
+		if (*str && !is_space(*str))
 		{
 			start = str;
-			while (is_space(*str) == 1)
+			while (*str && !is_space(*str))
 				str++;
 			arr[i] = malloc(sizeof (char) * (str - start) + 1);
-			ft_strcat(arr[i], start, str);
+			ft_strcpy(arr[i], start, str);
 			i++;
 		}
 		str++;
 	}
 	arr[i] = 0;
-	i--;
-	while (i >= 0)
+	while (--i >= 0)
 	{
 		ft_strprt(arr[i]);
-		i--;
-	}
-}
-
-void	ft_strprt(char *str)
-{
-	while (*str)
-	{
-		write(1, str, 1);
-		str++;
+		write(1, " ", 1);
+		
 	}
 }
 
