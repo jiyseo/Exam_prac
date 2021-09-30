@@ -19,9 +19,14 @@ int	word_count(char *str)
 	while (*str)
 	{
 		if (is_space(*str) == 1)
+		{
+			while (*str && is_space(*str) == 1)
+				str++;
 			n++;
+		}
 		str++;
 	}
+printf("word count=%d\n", n);
 	return (n);
 }
 
@@ -66,7 +71,8 @@ int	main(void)
 	int	i;
 	
 	i = 0;
-	arr = ft_split("hello hi	where    are 	you");
+arr = ft_split("  a");
+//	arr = ft_split("hello hi	where    are 	you");
 	while (arr[i])
 	{
 		printf("%s\n", arr[i]);

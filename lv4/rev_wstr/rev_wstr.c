@@ -1,5 +1,6 @@
 #include <unistd.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 int	is_space(char ch)
 {
@@ -38,7 +39,7 @@ void	ft_strprt(char *str)
 	int	i;
 
 	i = 0;
-	while(str[i] == '\0')
+	while(str[i] != '\0')
 	{
 		write(1, &str[i], 1);
 		i++;
@@ -56,25 +57,26 @@ void	ft_split(char *str)
 	n = ft_word_cnt(start);
 	arr = malloc(sizeof (char*) * n);
 	i = 0;
-	while (*str)
+	while (*str != '\0')
 	{
-		if (*str && !is_space(*str))
+		if (is_space(*str) == 0)
 		{
 			start = str;
-			while (*str && !is_space(*str))
-				str++;
+			while (*str != '\0' && !is_space(*str))
+				++str;
 			arr[i] = malloc(sizeof (char) * (str - start) + 1);
 			ft_strcpy(arr[i], start, str);
 			i++;
 		}
-		str++;
+		else
+			++str;
 	}
-	arr[i] = 0;
-	while (--i >= 0)
+	i--;
+	while (i >= 0)
 	{
 		ft_strprt(arr[i]);
 		write(1, " ", 1);
-		
+		i--;
 	}
 }
 
